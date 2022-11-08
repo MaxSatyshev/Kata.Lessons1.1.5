@@ -32,7 +32,13 @@ public class Util {
     }
 
     // Конфигурация Hibernate
-    Configuration configuration = new Configuration().addAnnotatedClass(jm.task.core.jdbc.model.User.class);
+    Configuration configuration = new Configuration()
+            .setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver")
+            .setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/databasetest")
+            .setProperty("hibernate.connection.username", "root")
+            .setProperty("hibernate.connection.password", "root")
+            .setProperty("dialect", "org.hibernate.dialect.MySQLDialect")
+            .addAnnotatedClass(jm.task.core.jdbc.model.User.class);
     private SessionFactory sessionFactory = configuration.buildSessionFactory();
     public SessionFactory getSessionFactory() {
         return sessionFactory;
