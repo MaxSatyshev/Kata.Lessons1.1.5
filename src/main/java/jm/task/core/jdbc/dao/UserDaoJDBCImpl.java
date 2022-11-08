@@ -1,6 +1,5 @@
 package jm.task.core.jdbc.dao;
 
-import jm.task.core.jdbc.Main;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 
@@ -37,10 +36,10 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        try (PreparedStatement ps = util.getConnection().prepareStatement("INSERT INTO users(`name`, lastname, age) VALUES(?, ?, ?);")) {
+        try (PreparedStatement ps = util.getConnection().prepareStatement("INSERT INTO users(name, lastname, age) VALUES(?, ?, ?);")) {
             ps.setString(1, name);
             ps.setString(2, lastName);
-            ps.setInt(3, age);
+            ps.setByte(3, age);
             ps.execute();
         } catch (SQLException e) {
             System.out.println("Ошибка добавления нового юзера");
@@ -57,8 +56,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public List<User> getAllUsers() {
         List<User> listUsers = new ArrayList<>();
-        try (Statement statement = util.getConnection().createStatement()) {
-            ResultSet resultSet = statement.executeQuery("select * from users;");
+        try (Statement statement = util.getConnection().createStatement();
+             ResultSet resultSet = statement.executeQuery("select * from users;")) {
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getLong(1));
